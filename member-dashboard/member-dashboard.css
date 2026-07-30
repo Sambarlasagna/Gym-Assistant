@@ -1,0 +1,104 @@
+/* Member Dashboard Styles */
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 1.6rem;
+    padding: 1.4rem 0;
+}
+
+.dashboard-header h1 {
+    font-size: 2rem;
+    color: #123047;
+    margin-bottom: 0.35rem;
+}
+
+.dashboard-header p {
+    font-size: 1rem;
+    color: #47657a;
+}
+
+.membership-status {
+    margin-bottom: 1.4rem;
+    border-left: 4px solid #d96c2f;
+}
+
+.membership-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid #d7e1e8;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-row span {
+    color: #304e63;
+}
+
+.detail-row strong {
+    color: #123047;
+}
+
+.text-success {
+    color: #1d7b71 !important;
+}
+
+.quick-actions h2 {
+    font-size: 1.45rem;
+    color: #123047;
+    margin-bottom: 1rem;
+}
+
+.action-card {
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 1.1rem;
+    border: 1px solid #cad7e0;
+}
+
+.action-card:hover {
+    border-color: #d96c2f;
+}
+
+.action-icon {
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    color: #5f7890;
+}
+
+.action-card h3 {
+    font-size: 1.05rem;
+    color: #123047;
+    margin: 0;
+}
+
+.action-card p {
+    color: #4f6b7f;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .dashboard-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+    }
+}
