@@ -1,0 +1,367 @@
+/* Global Styles for GymFit */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --ink-900: #0c2435;
+    --ink-700: #2d4e63;
+    --sand-100: #f6f1e9;
+    --sand-200: #ece3d4;
+    --clay-500: #d96c2f;
+    --clay-600: #bf5922;
+    --mint-500: #2a9d8f;
+    --danger-500: #b3261e;
+    --border-color: #cfd8df;
+    --surface: #ffffff;
+    --text-color: #1e3547;
+    --muted: #627b8d;
+    --radius: 12px;
+    --transition: 180ms ease;
+}
+
+body {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Segoe UI', sans-serif;
+    color: var(--text-color);
+    line-height: 1.55;
+    background:
+        radial-gradient(circle at 8% 12%, rgba(217, 108, 47, 0.18), transparent 32%),
+        radial-gradient(circle at 92% 78%, rgba(42, 157, 143, 0.16), transparent 35%),
+        linear-gradient(165deg, #f8f5ef 0%, #ebf2f7 100%);
+    min-height: 100vh;
+}
+
+nav {
+    background: rgba(12, 36, 53, 0.96);
+    backdrop-filter: blur(6px);
+    padding: 0.95rem 1.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 24px rgba(7, 24, 35, 0.18);
+    margin-bottom: 1.6rem;
+    border-bottom: 2px solid rgba(217, 108, 47, 0.45);
+}
+
+nav .logo {
+    color: #f7efe4;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+nav .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+    align-items: center;
+}
+
+nav .nav-links a {
+    color: #dbe8f0;
+    text-decoration: none;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.96rem;
+    padding: 0.3rem 0.55rem;
+    border-radius: 999px;
+}
+
+nav .nav-links a:hover {
+    color: #fff;
+    background: rgba(217, 108, 47, 0.22);
+}
+
+nav .user-info {
+    color: #eef6fb;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+nav .logout-btn {
+    background: var(--danger-500);
+    color: #fff;
+    border: none;
+    padding: 0.42rem 0.8rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+nav .logout-btn:hover {
+    background: #971c15;
+}
+
+.container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 1.2rem;
+}
+
+button,
+.btn {
+    padding: 0.68rem 1.15rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.96rem;
+    transition: var(--transition);
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: var(--clay-500);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: var(--clay-600);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #1a4f68;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background: #153f54;
+}
+
+.btn-success {
+    background: var(--mint-500);
+    color: #fff;
+}
+
+.btn-success:hover {
+    background: #1f7f74;
+}
+
+.btn-danger {
+    background: var(--danger-500);
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: #971c15;
+}
+
+.btn-text {
+    background: transparent;
+    color: #1a4f68;
+    border: 1px solid #98b1bf;
+}
+
+.btn-text:hover {
+    background: #e8f0f5;
+}
+
+.btn-lg {
+    padding: 0.9rem 1.3rem;
+    font-size: 1rem;
+}
+
+.btn-block {
+    width: 100%;
+    display: block;
+}
+
+form {
+    background: var(--surface);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: 0 12px 24px rgba(18, 48, 71, 0.12);
+}
+
+.form-group {
+    margin-bottom: 1.15rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    color: #294860;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 0.66rem 0.74rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    font-family: inherit;
+    background: #fff;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--clay-500);
+    box-shadow: 0 0 0 3px rgba(217, 108, 47, 0.2);
+}
+
+.card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    box-shadow: 0 10px 22px rgba(20, 52, 75, 0.1);
+    border: 1px solid #d8e2e8;
+    margin-bottom: 1rem;
+    transition: var(--transition);
+}
+
+.card:hover {
+    box-shadow: 0 14px 28px rgba(15, 39, 56, 0.14);
+    transform: translateY(-2px);
+}
+
+.card-title {
+    font-size: 1.24rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    color: var(--ink-900);
+}
+
+.card-content {
+    color: var(--text-color);
+}
+
+.grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.grid-2 {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.grid-3 {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.7rem;
+}
+
+thead {
+    background: #1a4f68;
+    color: #fff;
+}
+
+th,
+td {
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid #d5dee4;
+}
+
+tbody tr:hover {
+    background: #f2f7fa;
+}
+
+.alert {
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    margin-bottom: 0.9rem;
+}
+
+.alert-success {
+    background: #ddf5ef;
+    color: #155f56;
+    border: 1px solid #b8e8dc;
+}
+
+.alert-error {
+    background: #fbe0df;
+    color: #7d1f1a;
+    border: 1px solid #f2c6c3;
+}
+
+.alert-info {
+    background: #e2eef6;
+    color: #174663;
+    border: 1px solid #c2dcec;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.badge-success {
+    background: #ddf5ef;
+    color: #0f675d;
+}
+
+.badge-danger {
+    background: #fbe0df;
+    color: #8b1d16;
+}
+
+.badge-info {
+    background: #e2eef6;
+    color: #174663;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 280ms ease;
+}
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+
+    nav .nav-links {
+        flex-wrap: wrap;
+        gap: 0.35rem;
+    }
+
+    .container {
+        padding: 0 0.8rem;
+    }
+
+    .grid-2,
+    .grid-3 {
+        grid-template-columns: 1fr;
+    }
+
+    th,
+    td {
+        padding: 0.58rem;
+        font-size: 0.9rem;
+    }
+}
