@@ -1,0 +1,8 @@
+{
+  "name": "personalized-gym-assistant",
+  "version": "1.0.0",
+  "description": "A gym management project",
+  "scripts": {
+    "start": "npx http-server ."
+  }
+}

@@ -1,0 +1,17 @@
+# Use official Nginx image to serve static files
+FROM nginx:alpine
+
+# Remove default Nginx static content
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy all project files into the Nginx web root
+COPY . /usr/share/nginx/html
+
+# Copy custom Nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx in the foreground
+CMD ["nginx", "-g", "daemon off;"]
