@@ -38,6 +38,19 @@ const DUMMY_ANNOUNCEMENTS = [
     }
 ];
 
+function getStoredAnnouncements() {
+    const stored = localStorage.getItem('announcements');
+    if (!stored) return DUMMY_ANNOUNCEMENTS;
+
+    try {
+        return JSON.parse(stored) || DUMMY_ANNOUNCEMENTS;
+    } catch (error) {
+        console.warn('Invalid announcements data in localStorage, resetting to defaults.', error);
+        localStorage.removeItem('announcements');
+        return DUMMY_ANNOUNCEMENTS;
+    }
+}
+
 // Create announcements management page for admin
 function createAnnouncementsAdminPage() {
     // Check if user is admin
@@ -58,7 +71,7 @@ function createAnnouncementsAdminPage() {
     const container = document.createElement('div');
     container.className = 'announcements-admin-container';
 
-    let announcements = JSON.parse(localStorage.getItem('announcements')) || DUMMY_ANNOUNCEMENTS;
+    let announcements = getStoredAnnouncements();
 
     container.innerHTML = `
         <div class="page-header">
