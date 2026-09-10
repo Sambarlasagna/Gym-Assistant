@@ -201,6 +201,40 @@ npm run build
 
 ---
 
+## 🎨 Software Design
+
+> **[📄 Full Software Design Document](docs/design/software-design-document.html)** — Open in browser and print to PDF (Ctrl+P → Save as PDF).
+
+### Architecture Diagram
+
+![Architecture Diagram](docs/design/architecture.png)
+
+The application follows a **"Client-Side MVC-Lite"** architectural style:
+- **Model** → Browser `localStorage` (JSON stores for users, plans, announcements)
+- **View** → HTML pages + dynamically rendered DOM + React components (Vite bundle)
+- **Controller** → `GymManagementApp` class in `assets/app.js` (centralized routing & auth guard) + per-module JS files (`diet.js`, `workout.js`, `admin-dashboard.js`)
+
+### Main Design Choices
+
+| Principle | How it's applied |
+|---|---|
+| **Abstraction** | `GymManagementApp` hides routing complexity; `DIET_PLANS` / `WORKOUT_PLANS` constants abstract raw data |
+| **Modularity** | Feature-based folder structure: `auth/`, `admin/`, `member-dashboard/`, `workout-diet/`, `react-app/` |
+| **High Cohesion** | `diet.js` handles only diet logic; `announcements.js` handles only announcements — one purpose per file |
+| **Low Coupling** | Modules communicate via `CustomEvent('navigate', ...)` — no direct cross-module function calls |
+
+The hybrid **Vanilla JS + React** approach keeps simple pages lightweight while giving interactive plan UIs the full power of React's component model. All data is stored in `localStorage` — making the app fully portable and deployable as a static site with zero backend dependency.
+
+### Design Assets
+
+All design files are in [`docs/design/`](docs/design/):
+- [`architecture.drawio`](docs/design/architecture.drawio) — Editable source diagram
+- [`architecture.png`](docs/design/architecture.png) — PNG export
+- [`ui-screenshots/`](docs/design/ui-screenshots/) — 6 UI screen mockups (Login, Member Dashboard, Workout Plans, Diet Plans, Announcements, Admin Dashboard)
+- [`software-design-document.html`](docs/design/software-design-document.html) — Full Software Design Document (print to PDF)
+
+---
+
 ## 📝 Notes
 
 - This project uses **client-side storage only** and is intended for **learning and demonstration** purposes.

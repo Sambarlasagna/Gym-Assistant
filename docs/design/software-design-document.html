@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Software Design Document - Personalized Gym Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#0c2435;--ink2:#1a3a52;--clay:#d96c2f;--clay2:#bf5922;--mint:#2a9d8f;--sand:#f6f1e9;--white:#ffffff;--muted:#627b8d;--border:#cfd8df;--danger:#b3261e;--warn:#d4810a;--r:10px}
+html{font-size:11pt}
+body{font-family:"Inter",sans-serif;color:var(--ink);background:#fff;line-height:1.65}
+@page{size:A4;margin:18mm 18mm 20mm 18mm}
+@media print{.page-break{page-break-before:always}.no-break{page-break-inside:avoid}body{font-size:10pt}.print-hint{display:none}}
+.doc{max-width:900px;margin:0 auto;padding:20px 32px 60px}
+.print-hint{background:#e8f4fd;border:1px solid #b8d9f0;border-radius:var(--r);padding:10px 16px;margin-bottom:24px;font-size:.85rem;color:#174663}
+.cover{min-height:260px;background:linear-gradient(145deg,var(--ink) 0%,var(--ink2) 60%,#1e4d6b 100%);border-radius:16px;padding:48px 44px 40px;color:#fff;margin-bottom:36px;position:relative;overflow:hidden}
+.cover::before{content:"";position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(217,108,47,.35),transparent 70%)}
+.cover::after{content:"";position:absolute;bottom:-40px;left:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(42,157,143,.25),transparent 70%)}
+.cover-label{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--clay);font-weight:600;margin-bottom:10px}
+.cover h1{font-size:2rem;font-weight:800;line-height:1.2;margin-bottom:8px}
+.cover h1 span{color:var(--clay)}
+.cover .sub{font-size:1.05rem;color:rgba(255,255,255,.75);margin-bottom:28px}
+.cover-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.cover-meta-item{background:rgba(255,255,255,.1);border-radius:8px;padding:10px 14px;border:1px solid rgba(255,255,255,.15)}
+.cover-meta-item .label{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:2px}
+.cover-meta-item .value{font-weight:600;font-size:.9rem}
+.section-num{display:inline-block;background:var(--clay);color:#fff;font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:4px;margin-right:8px;vertical-align:middle;letter-spacing:.05em}
+h2{font-size:1.25rem;font-weight:700;color:var(--ink);margin:32px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--clay)}
+h3{font-size:1rem;font-weight:700;color:var(--ink2);margin:20px 0 8px}
+h4{font-size:.9rem;font-weight:600;color:var(--clay2);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.06em}
+p{margin-bottom:10px}
+.intro-box{background:var(--sand);border-radius:var(--r);padding:18px 22px;border-left:4px solid var(--clay);margin-bottom:20px}
+.intro-box p:last-child{margin-bottom:0}
+.principles-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.principle-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;border-top:4px solid var(--clay)}
+.principle-card.mint{border-top-color:var(--mint)}
+.principle-card.ink{border-top-color:var(--ink)}
+.principle-card.warn{border-top-color:var(--warn)}
+.principle-card h3{margin-top:0}
+.principle-card .icon{font-size:1.6rem;margin-bottom:6px}
+pre{background:#0f1e2b;color:#a5d8ff;border-radius:var(--r);padding:14px 18px;font-family:"Fira Code",monospace;font-size:.8rem;line-height:1.6;overflow-x:auto;margin:10px 0 14px}
+pre .kw{color:#ff9d5c}pre .str{color:#69db7c}pre .fn{color:#74c0fc}pre .cmt{color:#5c7a8c;font-style:italic}pre .cls{color:#ffd43b}
+code{font-family:"Fira Code",monospace;font-size:.82em;background:#eef0f6;border-radius:4px;padding:1px 6px;color:#c0392b}
+table{width:100%;border-collapse:collapse;margin:12px 0 18px;font-size:.9rem}
+thead tr{background:var(--ink);color:#fff}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid #d5dee4}
+tbody tr:nth-child(even) td{background:#f6f8fa}
+.arch-img{width:100%;border-radius:var(--r);border:1px solid var(--border);margin:14px 0;box-shadow:0 4px 16px rgba(12,36,53,.12)}
+.ui-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.ui-card{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;background:#fff;box-shadow:0 2px 10px rgba(12,36,53,.08)}
+.ui-card img{width:100%;display:block;border-bottom:1px solid var(--border)}
+.ui-card-caption{padding:10px 12px;font-size:.82rem;font-weight:600;color:var(--ink2);background:var(--sand)}
+.ui-card-caption span{display:block;font-weight:400;color:var(--muted);font-size:.78rem;margin-top:2px}
+.decision-list{list-style:none;margin:14px 0}
+.decision-list li{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;margin-bottom:12px;border-left:5px solid var(--clay)}
+.decision-list li.d2{border-left-color:var(--mint)}
+.decision-list li.d3{border-left-color:var(--ink)}
+.decision-list li.d4{border-left-color:var(--warn)}
+.decision-list li.d5{border-left-color:#9b59b6}
+.decision-num{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--clay);margin-bottom:3px}
+.decision-list li.d2 .decision-num{color:var(--mint)}
+.decision-list li.d3 .decision-num{color:var(--ink)}
+.decision-list li.d4 .decision-num{color:var(--warn)}
+.decision-list li.d5 .decision-num{color:#9b59b6}
+.decision-list li h3{margin:0 0 6px;font-size:.96rem}
+.decision-list li p{margin:0 0 6px;font-size:.88rem;color:#3a5468}
+.flow{background:#0f1e2b;color:#a5f3fc;border-radius:var(--r);padding:16px 20px;font-family:"Fira Code",monospace;font-size:.82rem;line-height:1.9;margin:12px 0;white-space:pre}
+.flow .arrow{color:#ff9d5c}.flow .node{color:#ffd43b}.flow .label{color:#a9e34b}
+.info-box{background:#e2eef6;border:1px solid #b8d4e8;border-radius:var(--r);padding:14px 18px;color:#174663;font-size:.88rem;margin:12px 0}
+.doc-footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--border);font-size:.8rem;color:var(--muted);display:flex;justify-content:space-between}
+.toc{list-style:none;margin:12px 0 24px}
+.toc li{padding:6px 0;border-bottom:1px dotted var(--border);display:flex;justify-content:space-between;font-size:.92rem}
+.toc li a{color:var(--ink2);text-decoration:none;font-weight:500}
+.toc .page-num{color:var(--muted);font-size:.82rem}
+ul.bullet{padding-left:20px;margin:8px 0 14px}
+ul.bullet li{margin-bottom:5px}
+hr.divider{border:none;border-top:1px solid var(--border);margin:28px 0}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<div class="print-hint">
+  To save as PDF: Press Ctrl+P, change destination to "Save as PDF", set margins to "Minimum", then Save.
+</div>
+
+<div class="cover no-break">
+  <div class="cover-label">Digital Assignment 2 / Review 2 — Fall 2026</div>
+  <h1>Software Design Document<br><span>Personalized Gym Assistant</span></h1>
+  <div class="sub">A client-side gym management system for members and administrators</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><div class="label">Course</div><div class="value">Software Engineering</div></div>
+    <div class="cover-meta-item"><div class="label">Submission</div><div class="value">September 2026</div></div>
+    <div class="cover-meta-item"><div class="label">GitHub Repo</div><div class="value">Gym-Assistant</div></div>
+    <div class="cover-meta-item"><div class="label">Tech Stack</div><div class="value">HTML · CSS · JS · React</div></div>
+  </div>
+</div>
+
+<h2><span class="section-num">TOC</span>Table of Contents</h2>
+<ul class="toc">
+  <li><a href="#s1">1. Project Overview</a><span class="page-num">2</span></li>
+  <li><a href="#s2">2. Design Principles Applied</a><span class="page-num">2</span></li>
+  <li><a href="#s3">3. High-Level Architecture</a><span class="page-num">4</span></li>
+  <li><a href="#s4">4. User Interface Design</a><span class="page-num">5</span></li>
+  <li><a href="#s5">5. Design Decisions &amp; Rationale</a><span class="page-num">7</span></li>
+  <li><a href="#s6">6. Maintainability &amp; Future Extensibility</a><span class="page-num">8</span></li>
+  <li><a href="#s7">7. References</a><span class="page-num">9</span></li>
+</ul>
+
+<h2 id="s1"><span class="section-num">01</span>Project Overview</h2>
+<div class="intro-box">
+  <p><strong>Personalized Gym Assistant</strong> is a role-based, client-side web application designed to streamline gym management for both gym <em>members</em> and <em>administrators</em>. Members can view personalized workout plans, diet plans, and announcements. Admins can create and manage those plans and publish updates — all from a browser, with no backend server required.</p>
+  <p>The application is built on a hybrid tech stack: <strong>Vanilla HTML/CSS/JavaScript</strong> handles navigation, authentication, and dashboards; a <strong>React + Vite</strong> bundle powers the interactive workout and diet plan interfaces. All state is persisted in <code>localStorage</code>.</p>
+</div>
+<table>
+  <thead><tr><th>Role</th><th>Key Capabilities</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Member</strong></td><td>Login → Dashboard → View Workout Plans → View Diet Plans → Read Announcements</td></tr>
+    <tr><td><strong>Admin</strong></td><td>Login → Admin Dashboard → Create/Edit Plans → Post Announcements</td></tr>
+  </tbody>
+</table>
+
+<div class="page-break"></div>
+<h2 id="s2"><span class="section-num">02</span>Design Principles Applied</h2>
+<p>Four core software design principles were consciously applied throughout the codebase.</p>
+
+<div class="principles-grid">
+  <div class="principle-card no-break">
+    <div class="icon">🔲</div>
+    <h3>Abstraction</h3>
+    <p>Complex behaviours are hidden behind clean interfaces. Users of a function or class do not need to know <em>how</em> it works — only <em>what</em> it does.</p>
+    <ul class="bullet">
+      <li><code>GymManagementApp</code> class in <code>assets/app.js</code> abstracts all routing and auth-guard logic behind a single object.</li>
+      <li><code>DIET_PLANS</code> and <code>WORKOUT_PLANS</code> constant objects abstract raw data; UI code loops over them without knowing internal structure.</li>
+    </ul>
+  </div>
+  <div class="principle-card mint no-break">
+    <div class="icon">🧩</div>
+    <h3>Modularity</h3>
+    <p>The system is split into independent, self-contained modules. Each module owns its HTML, CSS, and JS.</p>
+    <ul class="bullet">
+      <li><code>auth/</code> — login &amp; signup only</li>
+      <li><code>member-dashboard/</code> — member view only</li>
+      <li><code>admin/</code> — admin panel only</li>
+      <li><code>workout-diet/</code> — workout &amp; diet pages</li>
+      <li><code>react-app/</code> — React components (separate build)</li>
+    </ul>
+  </div>
+  <div class="principle-card ink no-break">
+    <div class="icon">🎯</div>
+    <h3>Cohesion</h3>
+    <p>Each module and function does <em>one thing well</em> — all its code is closely related to a single responsibility.</p>
+    <ul class="bullet">
+      <li><code>diet.js</code> contains only diet-related logic: data, create, edit, delete, render.</li>
+      <li><code>member-dashboard.js</code> contains only member view logic.</li>
+      <li><code>announcements.js</code> handles only announcement CRUD — nothing else.</li>
+    </ul>
+  </div>
+  <div class="principle-card warn no-break">
+    <div class="icon">🔗</div>
+    <h3>Low Coupling</h3>
+    <p>Modules communicate through events or shared data — never through direct function calls across module boundaries.</p>
+    <ul class="bullet">
+      <li>Navigation uses a custom event bus: <code>CustomEvent('navigate', ...)</code></li>
+      <li>React bundle reads/writes <code>localStorage</code> — fully decoupled from vanilla JS.</li>
+      <li>Auth and dashboard pages share data only via <code>localStorage</code> keys.</li>
+    </ul>
+  </div>
+</div>
+
+<h3>Code Evidence — Abstraction &amp; Low Coupling</h3>
+<pre><span class="cmt">// assets/app.js — GymManagementApp class</span>
+<span class="cmt">// Abstraction: all routing logic hidden inside handleNavigation()</span>
+<span class="cls">class GymManagementApp</span> {
+    <span class="fn">handleNavigation</span>(page) {
+        <span class="kw">const</span> routes = {
+            <span class="str">'dashboard'</span>:      <span class="str">'../member-dashboard/dashboard.html'</span>,
+            <span class="str">'manage-diet'</span>:   <span class="str">'../workout-diet/manage-diet.html'</span>,
+            <span class="str">'announcements-admin'</span>: <span class="str">'../admin/announcements-admin.html'</span>
+        };
+        <span class="kw">if</span> (routes[page]) window.location.href = routes[page];
+    }
+}
+
+<span class="cmt">// Low Coupling: modules navigate via events, not direct calls</span>
+<span class="cmt">// diet.js — no knowledge of routing; fires event only</span>
+window.<span class="fn">dispatchEvent</span>(<span class="kw">new</span> <span class="cls">CustomEvent</span>(<span class="str">'navigate'</span>, { detail: <span class="str">'manage-diet'</span> }));
+
+<span class="cmt">// app.js listens centrally — one place handles all routing</span>
+window.<span class="fn">addEventListener</span>(<span class="str">'navigate'</span>, (e) => <span class="kw">this</span>.<span class="fn">handleNavigation</span>(e.detail));</pre>
+
+<pre><span class="cmt">// workout-diet/diet.js — High Cohesion example</span>
+<span class="cmt">// All diet-related data AND logic live in ONE file</span>
+<span class="kw">const</span> DIET_PLANS = { <span class="cmt">/* abstracted data object */</span> };
+
+<span class="kw">function</span> <span class="fn">createDietManagementPage</span>() { <span class="cmt">/* renders admin form */</span> }
+<span class="kw">function</span> <span class="fn">initDietManagementPage</span>(container) { <span class="cmt">/* wires events */</span> }
+<span class="kw">function</span> <span class="fn">editDietPlan</span>(planId) { <span class="cmt">/* edit existing */</span> }
+<span class="kw">function</span> <span class="fn">deleteDietPlan</span>(index) { <span class="cmt">/* delete */</span> }
+<span class="cmt">// Nothing else. Diet logic = diet file only.</span></pre>
+
+<div class="page-break"></div>
+<h2 id="s3"><span class="section-num">03</span>High-Level Architecture</h2>
+
+<h3>Architectural Style: Client-Side MVC-Lite + Component Layer</h3>
+<div class="intro-box">
+  <p>The application follows a <strong>"Client-Side MVC-Lite"</strong> pattern — a simplified Model-View-Controller approach adapted for a zero-backend, localStorage-driven environment. A separate <strong>React Component Layer</strong> handles the most interactive UI sections.</p>
+</div>
+
+<table>
+  <thead><tr><th>MVC Role</th><th>Maps to</th><th>Files</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Model</strong></td><td>Browser localStorage JSON stores</td><td>localStorage keys: currentUser, dietPlans, workoutPlans, announcements</td></tr>
+    <tr><td><strong>View</strong></td><td>HTML pages + dynamically generated DOM + React components</td><td>auth/*.html, member-dashboard/*.html, admin/*.html, react-app/src/</td></tr>
+    <tr><td><strong>Controller</strong></td><td>GymManagementApp class + per-module JS files</td><td>assets/app.js, diet.js, workout.js, admin-dashboard.js</td></tr>
+  </tbody>
+</table>
+
+<h3>Architecture Diagram</h3>
+<img class="arch-img" src="architecture.png" alt="Personalized Gym Assistant Architecture Diagram">
+
+<h3>Why This Architectural Style?</h3>
+<ul class="bullet">
+  <li><strong>No backend needed:</strong> localStorage provides sufficient persistence for a demo/learning project.</li>
+  <li><strong>Role separation:</strong> The Auth Layer enforces role-based access at the routing level — clean and centralized.</li>
+  <li><strong>Hybrid rendering:</strong> Static HTML for fast page loads; React for richer, interactive data UIs.</li>
+  <li><strong>Docker + Nginx</strong> enables production-like deployment of a static site.</li>
+</ul>
+
+<h3>Data Flow</h3>
+<div class="flow"><span class="node">User Action</span> → <span class="node">HTML Page</span> → <span class="node">JS Controller</span> → <span class="node">Read/Write localStorage</span> → <span class="node">DOM Update / Redirect</span>
+
+<span class="label">Auth:</span>    login.html → auth JS → localStorage.setItem('currentUser') → redirect to dashboard
+<span class="label">Admin:</span>   manage-diet.html → diet.js → localStorage('dietPlans') → page reload
+<span class="label">React:</span>   workouts.html → React bundle → localStorage('workoutPlans') → component re-render</div>
+
+<div class="page-break"></div>
+<h2 id="s4"><span class="section-num">04</span>User Interface Design</h2>
+
+<div class="intro-box">
+  <p>The UI follows a consistent design language: a <strong>dark navy navbar</strong> (#0c2435) with <strong>clay-orange accents</strong> (#d96c2f) and a <strong>warm sandy background</strong> (#f6f1e9). This palette is energetic and professional — appropriate for a fitness application.</p>
+</div>
+
+<h3>UI Design Choices for User-Friendliness</h3>
+<ul class="bullet">
+  <li><strong>Role-based navigation:</strong> Members see only their links; Admins see only their links — no confusion.</li>
+  <li><strong>Card-based layout:</strong> Information grouped into cards with clear headings for easy scanning.</li>
+  <li><strong>Color-coded importance:</strong> Red/yellow borders instantly communicate announcement urgency.</li>
+  <li><strong>Tab/filter controls:</strong> Goal-based filtering lets members find relevant plans without scrolling.</li>
+  <li><strong>Admin-only controls:</strong> Create/Edit/Delete rendered only when isAdminUser() is true.</li>
+</ul>
+
+<div class="ui-grid">
+  <div class="ui-card no-break">
+    <img src="ui-screenshots/01-login.jpg" alt="Login Page">
+    <div class="ui-card-caption">Screen 1 — Login / Auth Panel<span>Glassmorphism card, dual-tab role selector, orange Sign In CTA</span></div>
+  </div>
+  <div class="ui-card no-break">
+    <img src="ui-screenshots/02-member-dashboard.jpg" alt="Member Dashboard">
+    <div class="ui-card-caption">Screen 2 — Member Dashboard<span>Personalized welcome, membership status card, 4 quick-action tiles</span></div>
+  </div>
+  <div class="ui-card no-break">
+    <img src="ui-screenshots/03-workout-plans.jpg" alt="Workout Plans">
+    <div class="ui-card-caption">Screen 3 — Workout Plans<span>Goal filter tabs (Weight Loss / Muscle Gain / Endurance), exercise table</span></div>
+  </div>
+  <div class="ui-card no-break">
+    <img src="ui-screenshots/04-diet-plans.jpg" alt="Diet Plans">
+    <div class="ui-card-caption">Screen 4 — Diet Plans<span>Goal dropdown filter, macro summary bar, per-meal cards with calories</span></div>
+  </div>
+  <div class="ui-card no-break">
+    <img src="ui-screenshots/05-announcements.jpg" alt="Announcements">
+    <div class="ui-card-caption">Screen 5 — Gym Announcements<span>Color-coded importance (red/yellow), filter dropdown, newest-first list</span></div>
+  </div>
+  <div class="ui-card no-break">
+    <img src="ui-screenshots/06-admin-dashboard.jpg" alt="Admin Dashboard">
+    <div class="ui-card-caption">Screen 6 — Admin Dashboard<span>4 live stat counters, 3 management action cards, recent announcements</span></div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+<h2 id="s5"><span class="section-num">05</span>Design Decisions &amp; Rationale</h2>
+
+<ul class="decision-list">
+  <li>
+    <div class="decision-num">Decision 1</div>
+    <h3>Hybrid Vanilla JS + React Architecture</h3>
+    <p><strong>What:</strong> Core pages use plain Vanilla JS. Workout and Diet plan pages use React + Vite compiled components.</p>
+    <p><strong>Why:</strong> Vanilla JS requires zero build tooling and loads instantly — perfect for simple CRUD pages. React shines for the data-heavy, filterable plan UIs. This hybrid avoids over-engineering simple pages while getting React's power where it genuinely helps.</p>
+  </li>
+  <li class="d2">
+    <div class="decision-num">Decision 2</div>
+    <h3>localStorage as the Sole Data Store</h3>
+    <p><strong>What:</strong> All user data, plans, and announcements are stored in localStorage as JSON. No backend, no database, no API calls.</p>
+    <p><strong>Why:</strong> Makes the app fully portable — runs from file://, GitHub Pages, or Docker with zero server dependency. For a learning/demo project, a backend would be disproportionate. The trade-off (device-local data) is acceptable and documented.</p>
+  </li>
+  <li class="d3">
+    <div class="decision-num">Decision 3</div>
+    <h3>Centralized Role-Based Routing in app.js</h3>
+    <p><strong>What:</strong> The GymManagementApp class is the single controller for all route guards and navigation. Modules fire CustomEvent('navigate') — they never redirect themselves.</p>
+    <p><strong>Why:</strong> A single routing controller means access control is enforced in exactly one place. Adding a new protected route requires one line change in app.js — not changes scattered across many files.</p>
+  </li>
+  <li class="d4">
+    <div class="decision-num">Decision 4</div>
+    <h3>Module-per-Feature Folder Structure</h3>
+    <p><strong>What:</strong> The repository is organized into feature-based folders: auth/, member-dashboard/, admin/, workout-diet/, react-app/.</p>
+    <p><strong>Why:</strong> This structure scales — developers find everything related to the admin panel inside admin/ without searching the whole repo. New features can be added as new folders without modifying existing ones (Open/Closed Principle).</p>
+  </li>
+  <li class="d5">
+    <div class="decision-num">Decision 5</div>
+    <h3>Docker + Nginx for Deployment</h3>
+    <p><strong>What:</strong> A Dockerfile wraps static files in an Nginx container. docker run -p 8080:80 gym-assistant serves the full app.</p>
+    <p><strong>Why:</strong> Containerization ensures identical behavior on any machine regardless of OS or local tooling. It prepares the project for real-world deployment patterns (cloud VMs, CI/CD). Nginx serves static assets with correct MIME types and efficient caching headers.</p>
+  </li>
+</ul>
+
+<h2 id="s6"><span class="section-num">06</span>Maintainability &amp; Future Extensibility</h2>
+<div class="info-box">The design was intentionally structured to allow the following extensions <strong>without modifying existing working code</strong>:</div>
+
+<table>
+  <thead><tr><th>Future Feature</th><th>How current design supports it</th></tr></thead>
+  <tbody>
+    <tr><td>Add a real backend/database</td><td>Replace localStorage read/write in module JS files with API calls — UI layer does not change</td></tr>
+    <tr><td>Add a new member feature (e.g., Progress Tracker)</td><td>Create new progress/ folder, add entry to routes in app.js — zero changes to other modules</td></tr>
+    <tr><td>Add hashed password auth</td><td>Auth logic is isolated in auth/ — replace the check in one place</td></tr>
+    <tr><td>Replace Vanilla JS pages with React</td><td>The CustomEvent navigation contract stays the same — React components just fire the same navigate events</td></tr>
+    <tr><td>Multi-language (i18n) support</td><td>All display strings are in HTML templates/JS template literals — extracting to a language object is straightforward</td></tr>
+  </tbody>
+</table>
+
+<h2 id="s7"><span class="section-num">07</span>References</h2>
+<ul class="bullet">
+  <li>Martin, R. C. (2008). <em>Clean Code: A Handbook of Agile Software Craftsmanship.</em> Prentice Hall.</li>
+  <li>Gamma, E., Helm, R., Johnson, R., &amp; Vlissides, J. (1994). <em>Design Patterns: Elements of Reusable Object-Oriented Software.</em> Addison-Wesley.</li>
+  <li>React Documentation — <em>Thinking in React</em>. https://react.dev/learn/thinking-in-react</li>
+  <li>MDN Web Docs — <em>Web Storage API (localStorage)</em>. https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage</li>
+  <li>Draw.io — Architecture Diagram Source: docs/design/architecture.drawio</li>
+  <li>GitHub Repository — Gym-Assistant: https://github.com/Sambarlasagna/Gym-Assistant</li>
+</ul>
+
+<hr class="divider">
+<div class="doc-footer">
+  <span>Personalized Gym Assistant — Software Design Document</span>
+  <span>Digital Assignment 2 / Review 2 — Fall 2026</span>
+</div>
+
+</div>
+</body>
+</html>
